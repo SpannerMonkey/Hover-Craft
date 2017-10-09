@@ -38,12 +38,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\KSP\1.3\Assembly-CSharp.dll</HintPath>
+      <HintPath>F:\KSP131Test\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
-      <HintPath>..\KSP\1.3\UnityEngine.dll</HintPath>
+      <HintPath>F:\KSP131Test\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -70,7 +70,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
-     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="PostBuildMacros">
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
       <Output TaskParameter="Assemblies" ItemName="Targets" />
@@ -84,41 +84,8 @@
     $(PostBuildEventDependsOn);
     PostBuildMacros;
   </PostBuildEventDependsOn>
-    <PostBuildEvent>@echo $(Targetname)
-SET ModName=HoverCraft
-@echo ...
-@echo set lpath vars from LocalDev storage...
-set /p KSP_DIR=&lt;"$(ProjectDir)LocalDev\ksp_dir.txt"
-set /p PDB2MDB_EXE=&lt;"$(ProjectDir)LocalDev\pdb2mdb_exe.txt"
-set /p ZA_DIR=&lt;"$(ProjectDir)LocalDev\7za_dir.txt"
-set /p DIST_DIR=&lt;"$(ProjectDir)LocalDev\dist_dir.txt"
-
-@echo distributing $(Targetname) files...
-copy /Y "$(TargetPath)" "%25KSP_DIR%25\GameData\%25ModName%25\Plugins\"
-copy /Y "$(TargetPath)" "$(ProjectDir)Distribution\GameData\%25ModName%25\Plugins\"
-copy /Y "$(TargetPath)" "C:\Users\dlane\Dropbox\Kerbal\ModDevelopment\Release"
-
-if $(ConfigurationName) == Debug (
-@echo building $(Targetname).dll.mdb file...
-cd "$(TargetDir)"
-call "%25PDB2MDB_EXE%25" $(Targetname).dll
-copy /Y "$(TargetDir)$(Targetname).dll.mdb" "%25KSP_DIR%25\GameData\%25ModName%25\Plugins\"
-)
-
-@echo deleting previous build ...
-if exist "%25DIST_DIR%25\%25ModName%25*.zip" del "%25DIST_DIR%25\%25ModName%25*.zip"
-@echo packaging new build...
-call "%25ZA_DIR%25\7za.exe" a -tzip -r  "%25DIST_DIR%25\%25ModName%25.@(VersionNumber)_%25DATE:~4,2%25%25DATE:~7,2%25%25DATE:~10,4%25.zip" "$(ProjectDir)Distribution\*.*"
-
-@echo Deploy $(Targetname) Distribution files to test env:  %25KSP_DIR%25\GameData...
-@echo copying:"$(SolutionDir)Distribution\GameData" to "%25KSP_DIR%25\GameData" 
-xcopy /E /Y "$(SolutionDir)Distribution\GameData" "%25KSP_DIR%25\GameData"
-
-if $(ConfigurationName) == Debug (
-copy /Y "$(TargetDir)$(Targetname).pdb" "%25KSP_DIR%25\GameData\%25ModName%25\Plugins\"
-)
-
-@echo Build/deploy complete!</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
